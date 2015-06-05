@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray"
+    >
+
+  <!-- Action-bar looking view -->
+ <include layout="@layout/actionbar" />
+
+
+  
+  
+  <!-- Content -->
+  <android.support.v4.widget.DrawerLayout
+      android:id="@+id/drawer_layout"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      >
+
+      <!-- 主内容 -->
+     <include layout="@layout/main_content" />
+
+
+      
+      <!-- 
+      左侧菜单栏 -->
+  
+      <include layout="@layout/main_drawer" />
+
+  </android.support.v4.widget.DrawerLayout>
+
+</LinearLayout>
