@@ -28,6 +28,8 @@
         </activity>
           <activity android:name="com.example.uwan.ChannelActivity" >
         </activity>
+         <activity android:name="com.example.uwan.DetailsActivity" >
+        </activity>
     </application>
 
 </manifest>

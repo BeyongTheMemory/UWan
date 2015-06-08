@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import org.w3c.dom.Text;
 
+import com.example.uwan.DetailsActivity;
 import com.example.uwan.R;
 import com.example.uwan.adapte.NewsAdapter;
 import com.example.uwan.bean.NewsEntity;
@@ -134,7 +135,7 @@ public class NewsFragment extends Fragment {
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						//进入新闻详情页面
-						/*Intent intent = new Intent(activity, DetailsActivity.class);
+					Intent intent = new Intent(activity, DetailsActivity.class);
 						if(channel_id == Constants.CHANNEL_CITY){
 							if(position != 0){
 								intent.putExtra("news", mAdapter.getItem(position - 1));
@@ -145,7 +146,7 @@ public class NewsFragment extends Fragment {
 							intent.putExtra("news", mAdapter.getItem(position));
 							startActivity(intent);
 							activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-						}*/
+						}
 					}
 				});
 				if(channel_id == 1){

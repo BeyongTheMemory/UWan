@@ -5,6 +5,7 @@ import static android.view.Gravity.START;
 
 import java.util.ArrayList;
 
+
 import com.example.uwan.adapte.NewsFragmentPagerAdapter;
 import com.example.uwan.app.AppApplication;
 import com.example.uwan.bean.ChannelItem;
@@ -12,6 +13,7 @@ import com.example.uwan.bean.ChannelManage;
 import com.example.uwan.fragment.NewsFragment;
 import com.example.uwan.tool.BaseTools;
 import com.example.uwan.view.ColumnHorizontalScrollView;
+import com.example.uwan.view.HeadListView.IXListViewListener;
 import com.example.uwan.widget.DrawerArrowDrawable;
 
 
@@ -39,7 +41,7 @@ import android.widget.SearchView.OnCloseListener;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements IXListViewListener{
 	  private DrawerArrowDrawable drawerArrowDrawable;
 	  private float offset;
 	  private boolean flipped;
@@ -341,5 +343,15 @@ public class MainActivity extends FragmentActivity {
 			}
 			checkView.setSelected(ischeck);
 		}
+	}
+	@Override
+	public void onRefresh() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onLoadMore() {
+		// TODO Auto-generated method stub
+		
 	}
 }
