@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import com.example.uwan.base.BaseActivity;
 import com.example.uwan.bean.NewsEntity;
+import com.example.uwan.service.NewsDetailsService;
 import com.example.uwan.tool.DateTools;
 
 import android.annotation.SuppressLint;
@@ -61,9 +62,9 @@ public class DetailsActivity extends BaseActivity {
 		news = (NewsEntity) getIntent().getSerializableExtra("news");
 		//news_url = news.getSource_url();
 		news_url = "http://top.sina.cn/finance/2015-06-01/tnews-iawzuney6528431.d.html?vt=4&pos=108";
-		//news_title = news.getTitle();
+		news_title = news.getTitle();
 		System.out.println(news.getTitle());
-		news_title = "测试";
+		//news_title = "测试";
 		System.out.println(news.getSource());
 		//news_source = news.getSource();
 	   news_source = "网站";
@@ -76,6 +77,7 @@ public class DetailsActivity extends BaseActivity {
 		if (!TextUtils.isEmpty(news_url)) {
 			WebSettings settings = webView.getSettings();
 			settings.setJavaScriptEnabled(true);//设置可以运行JS脚本
+			settings.setJavaScriptCanOpenWindowsAutomatically(true);
 //			settings.setTextZoom(120);//Sets the text zoom of the page in percent. The default is 100.
 			settings.setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 	//	settings.setUseWideViewPort(true); //打开页面时， 自适应屏幕 
@@ -87,9 +89,9 @@ public class DetailsActivity extends BaseActivity {
 			webView.addJavascriptInterface(new JavascriptInterface(getApplicationContext()),"imagelistner");
 			webView.setWebChromeClient(new MyWebChromeClient());
 			webView.setWebViewClient(new MyWebViewClient());
-			webView.loadUrl(news_url);
+		//	webView.loadUrl(news_url);
 		   //只对新闻内容进行加载
-		   //new MyAsnycTask().execute(news_url, news_title, news_source + " " +news_date);
+		   new MyAsnycTask().execute(news_url, news_title, news_source + " " +news_date);
 		}
 	}
 
@@ -103,7 +105,8 @@ public class DetailsActivity extends BaseActivity {
 		progressBar.setVisibility(View.VISIBLE);
 		title.setTextSize(13);
 		title.setVisibility(View.VISIBLE);
-		title.setText(news_url);
+	//	title.setText(news_url);
+		title.setText(news_title);
 		//评论条数
 		action_comment_count.setText(String.valueOf(news.getCommentNum()));
 		action_comment_count.setText("99+");
@@ -135,9 +138,8 @@ public class DetailsActivity extends BaseActivity {
 
 		@Override
 		protected String doInBackground(String... urls) {
-		//	String data=NewsDetailsService.getNewsDetails(urls[0],urls[1],urls[2]);
-			//return data;
-			return null;
+			String data=NewsDetailsService.getNewsDetails(urls[0],urls[1],urls[2]);
+			return data;
 		}
 
 		@Override

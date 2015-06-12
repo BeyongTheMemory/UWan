@@ -34,6 +34,7 @@ public class ChannelDao implements ChannelDaoInface {
 			values.put("id", item.getId());
 			values.put("orderId", item.getOrderId());
 			values.put("selected", item.getSelected());
+			values.put("isCity", item.getIsCity());
 			id = database.insert(SQLHelper.TABLE_CHANNEL, null, values);
 			flag = (id != -1 ? true : false);
 		} catch (Exception e) {
@@ -156,10 +157,12 @@ public class ChannelDao implements ChannelDaoInface {
 	}
 
 	public void clearFeedTable() {
+		
 		String sql = "DELETE FROM " + SQLHelper.TABLE_CHANNEL + ";";
 		SQLiteDatabase db = helper.getWritableDatabase();
 		db.execSQL(sql);
 		revertSeq();
+		
 	}
 
 	private void revertSeq() {

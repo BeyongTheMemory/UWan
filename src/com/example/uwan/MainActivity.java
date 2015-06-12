@@ -6,18 +6,22 @@ import static android.view.Gravity.START;
 import java.util.ArrayList;
 
 
+
+
 import com.example.uwan.adapte.NewsFragmentPagerAdapter;
 import com.example.uwan.app.AppApplication;
 import com.example.uwan.bean.ChannelItem;
 import com.example.uwan.bean.ChannelManage;
 import com.example.uwan.fragment.NewsFragment;
 import com.example.uwan.tool.BaseTools;
+import com.example.uwan.tool.DateTools;
 import com.example.uwan.view.ColumnHorizontalScrollView;
 import com.example.uwan.view.HeadListView.IXListViewListener;
 import com.example.uwan.widget.DrawerArrowDrawable;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -32,6 +36,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -41,7 +46,7 @@ import android.widget.SearchView.OnCloseListener;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 
-public class MainActivity extends FragmentActivity implements IXListViewListener{
+public class MainActivity extends FragmentActivity{
 	  private DrawerArrowDrawable drawerArrowDrawable;
 	  private float offset;
 	  private boolean flipped;
@@ -67,12 +72,14 @@ public class MainActivity extends FragmentActivity implements IXListViewListener
 		public final static int CHANNELREQUEST = 1;
 		/** 调整返回的RESULTCODE */
 		public final static int CHANNELRESULT = 10;
+		private Handler mHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mScreenWidth = BaseTools.getWindowsWidth(this);
 		mItemWidth = mScreenWidth / 7;// 一个Item宽度为屏幕的1/7
+		mHandler = new Handler();
         initActionBar();//初始化头部
         initContent();
     }
@@ -212,6 +219,7 @@ public class MainActivity extends FragmentActivity implements IXListViewListener
 			Bundle data = new Bundle();
     		data.putString("text", userChannelList.get(i).getName());
     		data.putInt("id", userChannelList.get(i).getId());
+    		data.putInt("iscity",userChannelList.get(i).getIsCity());
 			NewsFragment newfragment = new NewsFragment();
 			newfragment.setArguments(data);
 			fragments.add(newfragment);
@@ -220,6 +228,7 @@ public class MainActivity extends FragmentActivity implements IXListViewListener
 //		mViewPager.setOffscreenPageLimit(0);
 		mViewPager.setAdapter(mAdapetr);
 		mViewPager.setOnPageChangeListener(pageListener);
+		
 	}
 	
 	
@@ -229,34 +238,43 @@ public class MainActivity extends FragmentActivity implements IXListViewListener
 	}
 	
     private void initSeachView() {
-		final SearchView searchView = (SearchView)findViewById(R.id.sv);
-		final TextView tv_actionbar_title = (TextView)findViewById(R.id.tv_actionbar_title);
-		searchView.setSubmitButtonEnabled(true);
-		 searchView.setOnQueryTextListener(new OnQueryTextListener() {
-   
+		final ImageView searchView = (ImageView)findViewById(R.id.sv_iv);
+	//	 TextView tv_actionbar_title = (TextView)findViewById(R.id.tv_actionbar_title);
+		searchView.setOnClickListener(new OnClickListener(){
 
 			@Override
-			public boolean onQueryTextChange(String arg0) {
-				tv_actionbar_title.setVisibility(View.GONE);
-                return true;
-			}
-
-			@Override
-			public boolean onQueryTextSubmit(String arg0) {
+			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				tv_actionbar_title.setVisibility(View.VISIBLE);
-				return false;
+				onSearchRequested();// 激活搜索对话框
 			}
-		 });
-		 searchView.setOnCloseListener(new OnCloseListener() {
-             
-             @Override
-             public boolean onClose() {
-            		tv_actionbar_title.setVisibility(View.VISIBLE);
-            		//返回false收起输入框，true不收
-                     return false;
-             }
-       });
+			
+		});
+//		searchView.setSubmitButtonEnabled(true);
+//		 searchView.setOnQueryTextListener(new OnQueryTextListener() {
+//   
+//
+//			@Override
+//			public boolean onQueryTextChange(String arg0) {
+//				tv_actionbar_title.setVisibility(View.GONE);
+//                return true;
+//			}
+//
+//			@Override
+//			public boolean onQueryTextSubmit(String arg0) {
+//				// TODO Auto-generated method stub
+//				tv_actionbar_title.setVisibility(View.VISIBLE);
+//				return false;
+//			}
+//		 });
+//		 searchView.setOnCloseListener(new OnCloseListener() {
+//             
+//             @Override
+//             public boolean onClose() {
+//            		tv_actionbar_title.setVisibility(View.VISIBLE);
+//            		//返回false收起输入框，true不收
+//                     return false;
+//             }
+//       });
 	 	
 	}
 
@@ -344,14 +362,5 @@ public class MainActivity extends FragmentActivity implements IXListViewListener
 			checkView.setSelected(ischeck);
 		}
 	}
-	@Override
-	public void onRefresh() {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void onLoadMore() {
-		// TODO Auto-generated method stub
-		
-	}
+
 }

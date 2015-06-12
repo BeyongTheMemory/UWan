@@ -6,6 +6,7 @@
     <string name="hello_world">Hello world!</string>
   <string name="favorite_btn_delete">删除</string>
   <string name="dislike_dlg_lable_speech">读文章</string>
+  <string name="download">离线缓存</string>
   <string name="label_cancel_dislike">撤消</string>
   <string name="city_category_list_hint">选择城市，立即查看本地新闻</string>
   <string name="city_category_list_header">点击选择其他城市</string>
@@ -20,4 +21,5 @@
     <string name="xlistview_header_last_time">上次更新时间：</string>
     <string name="xlistview_footer_hint_normal">查看更多</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
+    <string name="search_hint">输入关键词</string>
 </resources>

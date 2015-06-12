@@ -28,26 +28,26 @@ public class ChannelManage {
 		defaultUserChannels = new ArrayList<ChannelItem>();
 		defaultOtherChannels = new ArrayList<ChannelItem>();
 		//默认用户频道列表
-		defaultUserChannels.add(new ChannelItem(1, "推荐", 1, 1));
-		defaultUserChannels.add(new ChannelItem(2, "热门", 2, 1));
-		defaultUserChannels.add(new ChannelItem(3, "城市", 3, 1));
-		defaultUserChannels.add(new ChannelItem(4, "社会", 4, 1));
-		defaultUserChannels.add(new ChannelItem(5, "娱乐", 5, 1));
-		defaultUserChannels.add(new ChannelItem(6, "军事", 6, 1));
-		defaultUserChannels.add(new ChannelItem(7, "财经", 7, 1));
+		defaultUserChannels.add(new ChannelItem(1, "推荐", 1, 1,0));
+		defaultUserChannels.add(new ChannelItem(2, "热门", 2, 1,0));
+		defaultUserChannels.add(new ChannelItem(3, "城市", 3, 1,1));
+		defaultUserChannels.add(new ChannelItem(4, "社会", 4, 1,0));
+		defaultUserChannels.add(new ChannelItem(5, "娱乐", 5, 1,0));
+		defaultUserChannels.add(new ChannelItem(6, "军事", 6, 1,0));
+		defaultUserChannels.add(new ChannelItem(7, "财经", 7, 1,0));
 		//默认其他频道列表
-		defaultOtherChannels.add(new ChannelItem(8, "汽车", 1, 0));
-		defaultOtherChannels.add(new ChannelItem(9, "美容", 2, 0));
-		defaultOtherChannels.add(new ChannelItem(10, "体育", 3, 0));
-		defaultOtherChannels.add(new ChannelItem(11, "星座", 4, 0));
-		defaultOtherChannels.add(new ChannelItem(12, "社会", 5, 0));
-		defaultOtherChannels.add(new ChannelItem(13, "健康", 6, 0));
-		defaultOtherChannels.add(new ChannelItem(14, "时尚", 7, 0));
-		defaultOtherChannels.add(new ChannelItem(15, "搞笑", 8, 0));
-		defaultOtherChannels.add(new ChannelItem(16, "婚姻", 9, 0));
-		defaultOtherChannels.add(new ChannelItem(17, "职场", 10, 0));
-		defaultOtherChannels.add(new ChannelItem(18, "国际", 11, 0));
-		defaultUserChannels.add(new ChannelItem(19, "房产", 12, 0));
+		defaultOtherChannels.add(new ChannelItem(8, "汽车", 1, 0,0));
+		defaultOtherChannels.add(new ChannelItem(9, "美容", 2, 0,0));
+		defaultOtherChannels.add(new ChannelItem(10, "体育", 3, 0,0));
+		defaultOtherChannels.add(new ChannelItem(11, "星座", 4, 0,0));
+		defaultOtherChannels.add(new ChannelItem(12, "社会", 5, 0,0));
+		defaultOtherChannels.add(new ChannelItem(13, "健康", 6, 0,0));
+		defaultOtherChannels.add(new ChannelItem(14, "时尚", 7, 0,0));
+		defaultOtherChannels.add(new ChannelItem(15, "搞笑", 8, 0,0));
+		defaultOtherChannels.add(new ChannelItem(16, "婚姻", 9, 0,0));
+		defaultOtherChannels.add(new ChannelItem(17, "职场", 10, 0,0));
+		defaultOtherChannels.add(new ChannelItem(18, "国际", 11, 0,0));
+		defaultUserChannels.add(new ChannelItem(19, "房产", 12, 0,0));
 	}
 
 	private ChannelManage(SQLHelper paramDBHelper) throws SQLException {
@@ -75,7 +75,7 @@ public class ChannelManage {
 		channelDao.clearFeedTable();
 	}
 	/**
-	 * 获取其他的频道
+	 * 获取用户选择的频道
 	 * @return 数据库存在用户配置 ? 数据库内的用户选择频道 : 默认用户选择频道 ;
 	 */
 	public List<ChannelItem> getUserChannel() {
@@ -91,6 +91,7 @@ public class ChannelManage {
 				navigate.setName(maplist.get(i).get(SQLHelper.NAME));
 				navigate.setOrderId(Integer.valueOf(maplist.get(i).get(SQLHelper.ORDERID)));
 				navigate.setSelected(Integer.valueOf(maplist.get(i).get(SQLHelper.SELECTED)));
+				navigate.setIsCity(Integer.valueOf(maplist.get(i).get(SQLHelper.ISCITY)));
 				list.add(navigate);
 			}
 			return list;
@@ -115,6 +116,7 @@ public class ChannelManage {
 				navigate.setName(maplist.get(i).get(SQLHelper.NAME));
 				navigate.setOrderId(Integer.valueOf(maplist.get(i).get(SQLHelper.ORDERID)));
 				navigate.setSelected(Integer.valueOf(maplist.get(i).get(SQLHelper.SELECTED)));
+				navigate.setIsCity(Integer.valueOf(maplist.get(i).get(SQLHelper.ISCITY)));
 				list.add(navigate);
 			}
 			return list;

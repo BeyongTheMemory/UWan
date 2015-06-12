@@ -2,6 +2,7 @@ package com.example.uwan.tool;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.example.uwan.bean.CityEntity;
 import com.example.uwan.bean.NewsEntity;
@@ -13,7 +14,10 @@ public class Constants {
 	 * 获取新闻列表
 	 */
 	public static ArrayList<NewsEntity> getNewsList() {
-		ArrayList<NewsEntity> newsList = new ArrayList<NewsEntity>();
+		 Random rdm = new Random(System.currentTimeMillis());
+        int intRd = Math.abs(rdm.nextInt())%3;
+        ArrayList<NewsEntity> newsList = new ArrayList<NewsEntity>();
+       if(intRd%2==0){
 		for(int i =0 ; i < 10 ; i++){
 			NewsEntity news = new NewsEntity();
 			news.setId(i);
@@ -26,7 +30,7 @@ public class Constants {
 			news.setNewsCategory("推荐");
 			news.setNewsCategoryId(1);
 			news.setSource_url("http://news.sina.com.cn/c/2014-05-05/134230063386.shtml");
-			news.setTitle("可以用谷歌眼镜做的10件酷事：导航、玩游戏");
+			news.setTitle("可以用谷歌眼镜做的10件酷事：导航、玩游戏"+i);
 			List<String> url_list = new ArrayList<String>();
 			if(i%2 == 1){
 				//三张图的布局
@@ -43,7 +47,7 @@ public class Constants {
 			
 			}else{
 				//一张右边图的布局
-				news.setTitle("AA用车:智能短租租车平台");
+				news.setTitle("AA用车:智能短租租车平台"+i);
 				String url = "http://r3.sinaimg.cn/2/2014/0417/a7/6/92478595/580x1000x75x0.jpg";
 				news.setPicOne(url);
 				url_list.add(url);
@@ -56,7 +60,7 @@ public class Constants {
 			news.setMark(i);
 			if(i == 4){
 				//一张大图
-				news.setTitle("部落战争强势回归");
+				news.setTitle("部落战争强势回归"+i);
 				news.setLocal("推广");
 				news.setIsLarge(true);
 				String url = "http://imgt2.bdstatic.com/it/u=3269155243,2604389213&fm=21&gp=0.jpg";
@@ -83,6 +87,52 @@ public class Constants {
 			}
 			newsList.add(news);
 		}
+       }else{
+    		for(int i =0 ; i < 10 ; i++){
+    			NewsEntity news = new NewsEntity();
+    			news.setId(i);
+    			news.setNewsId(i);
+    			news.setCollectStatus(false);
+    			news.setCommentNum(i + 10);
+    			news.setInterestedStatus(true);
+    			news.setLikeStatus(true);
+    			news.setReadStatus(false);
+    			news.setNewsCategory("热门");
+    			news.setNewsCategoryId(1);
+    			news.setSource_url("http://news.sina.com.cn/c/2014-05-05/134230063386.shtml");
+    			news.setTitle("另一批"+i);
+    			List<String> url_list = new ArrayList<String>();
+    		
+    				//一张右边图的布局
+    				news.setTitle("另一批"+i);
+    				String url = "http://r3.sinaimg.cn/2/2014/0417/a7/6/92478595/580x1000x75x0.jpg";
+    				news.setPicOne(url);
+    				url_list.add(url);
+    			
+    			news.setPicList(url_list);
+    			news.setPublishTime(Long.valueOf(i));
+    			news.setReadStatus(false);
+    			news.setSource("另一批"+i);
+    			news.setSummary("另一批"+i);
+    			news.setMark(i);
+    				news.setIsLarge(false);
+    			if(i == 2){
+    				
+    				news.setComment("评论部分，说的非常好。"+"\n"+"caocaocao"+"\n"+"xxxxxxx");//可换行
+    			}
+    			
+    			if(i <= 2){
+    				news.setPublishTime(Long.valueOf(DateTools.getTime()));
+    			}else if(i >2 && i <= 5){
+    				//昨天
+    				news.setPublishTime(Long.valueOf(DateTools.getTime()) - 86400);
+    			}else{
+    				//前天
+    				news.setPublishTime(Long.valueOf(DateTools.getTime()) - 86400 * 2);
+    			}
+    			newsList.add(news);
+    		}
+       }
 		return newsList;
 	}
 	
@@ -131,5 +181,5 @@ public class Constants {
 		return cityList;
 	}
 	/* 频道中区域 如杭州 对应的栏目ID */
-	public final static int CHANNEL_CITY = 3;
+	//public final static int CHANNEL_CITY = 3;
 }

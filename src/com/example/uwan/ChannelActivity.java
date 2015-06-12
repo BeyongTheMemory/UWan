@@ -19,6 +19,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
@@ -27,6 +28,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.AdapterView.OnItemClickListener;
@@ -98,6 +100,18 @@ public class ChannelActivity extends BaseActivity implements OnItemClickListener
 	private void initView() {
 		userGridView = (DragGrid) findViewById(R.id.userGridView);
 		otherGridView = (OtherGridView) findViewById(R.id.otherGridView);
+		ImageButton search = (ImageButton) findViewById(R.id.search_ib);
+		search.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent_channel = new  Intent(getApplicationContext(), ChannelSearchActivity.class);
+				startActivityForResult(intent_channel, 0);
+				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+			}
+			
+		});
 	}
 
 	@Override

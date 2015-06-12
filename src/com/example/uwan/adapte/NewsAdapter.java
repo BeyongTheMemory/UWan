@@ -17,8 +17,10 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,6 +35,7 @@ import android.widget.RelativeLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.Toast;
 
 public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeaderAdapter, OnScrollListener{
 	ArrayList<NewsEntity> newsList;
@@ -42,6 +45,9 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeaderAd
 	DisplayImageOptions options;
 	/** 弹出的更多选择框  */
 	private PopupWindow popupWindow;
+	/**Toast*/
+//	private RelativeLayout notify_view;
+//	private TextView notify_view_text;
 	public NewsAdapter(Activity activity, ArrayList<NewsEntity> newsList) {
 		this.activity = activity;
 		this.newsList = newsList;
@@ -49,8 +55,36 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeaderAd
 		options = Options.getListOptions();
 		initPopWindow();
 		initDateHead();
+	//	initToast();
 	}
 	
+//	private void initToast(){
+//		View view = inflater.inflate(R.layout.list_item, null);
+//		//Toast提示框
+//		notify_view = (RelativeLayout)view.findViewById(R.id.notify_view);
+//		notify_view_text = (TextView)view.findViewById(R.id.notify_view_text);
+//		notify_view.setVisibility(View.INVISIBLE);
+//	}
+//	/* 初始化通知栏目*/
+//	private void initNotify() {
+//		new Handler().postDelayed(new Runnable() {
+//			
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				notify_view_text.setText("已移除，我们将减少该类消息的推送");
+//				notify_view.setVisibility(View.VISIBLE);
+//				new Handler().postDelayed(new Runnable() {
+//					
+//					@Override
+//					public void run() {
+//						// TODO Auto-generated method stub
+//						notify_view.setVisibility(View.GONE);
+//					}
+//				}, 2000);
+//			}
+//		}, 1000);
+//	}
 	private List<Integer> mPositions;
 	private List<String> mSections;
 	
@@ -81,8 +115,22 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeaderAd
 	@Override
 	public NewsEntity getItem(int position) {
 		// TODO Auto-generated method stub
+		Log.v("nes",position+"");//这里position被+1
+		Log.v("neslist",newsList.size()+"");
 		if (newsList != null && newsList.size() != 0) {
+		//	Log.v("nesenty",newsList.get(position-1).getTitle());
+//			if(position == 0){
+//				return newsList.get(position);
+//			}
+//			else if(position == 1){
+//				return newsList.get(position-1);
+//			}
+//			else{
+//				Log.v("nesenty",newsList.get(position-2).getTitle());
+//				return newsList.get(position-2);
+//			}
 			return newsList.get(position);
+			
 		}
 		return null;
 	}
@@ -90,7 +138,10 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeaderAd
 	@Override
 	public long getItemId(int position) {
 		// TODO Auto-generated method stub
-		return position;
+		//return position;
+		Log.v("position",position+"");
+		Log.v("position+1",position+1+"");
+		return position;//刷新暂居一个位置
 	}
 
 	@Override
@@ -278,7 +329,9 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeaderAd
 	
 	/** popWindow 关闭按钮 */
 	private ImageView btn_pop_close;
-	
+	private LinearLayout ll_pop_dislike;//dislike
+	private LinearLayout ll_pop_favor;//collection
+	private LinearLayout ll_pop_speech;//download
 	/**
 	 * 初始化弹出的pop
 	 * */
@@ -289,13 +342,17 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeaderAd
 		//设置popwindow出现和消失动画
 		popupWindow.setAnimationStyle(R.style.PopMenuAnimation);
 		btn_pop_close = (ImageView) popView.findViewById(R.id.btn_pop_close);
+		ll_pop_dislike = (LinearLayout)popView.findViewById(R.id.ll_pop_dislike);
+		ll_pop_favor =  (LinearLayout)popView.findViewById(R.id.ll_pop_favor);
+		ll_pop_speech = (LinearLayout)popView.findViewById(R.id.ll_pop_speech);
 	}
 	
 	/** 
 	 * 显示popWindow
 	 * */
-	public void showPop(View parent, int x, int y,int postion) {
+	public void showPop(View parent, final int x, final int y,final int postion) {
 		//设置popwindow显示位置
+	
 		popupWindow.showAtLocation(parent, 0, x, y);
 		//获取popwindow焦点
 		popupWindow.setFocusable(true);
@@ -310,8 +367,43 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeaderAd
 				popupWindow.dismiss();
 			}
 		});
+		ll_pop_dislike.setOnClickListener(new OnClickListener() {
+			public void onClick(View paramView) {
+				newsList.remove(postion);
+				
+			
+				Toast toast =Toast.makeText(activity, "已移除，将减少此类新闻的推送", Toast.LENGTH_LONG);
+				//toast.setView(image);
+	         	//toast.setView(edit);
+				toast.setGravity(Gravity.CENTER, 0, y);
+				toast.show();
+				
+				
+				notifyDataSetChanged();
+				popupWindow.dismiss();
+			}
+		});
+		ll_pop_favor.setOnClickListener(new OnClickListener() {
+			public void onClick(View paramView) {
+				Toast toast =Toast.makeText(activity, "已收藏", Toast.LENGTH_LONG);
+				//toast.setView(image);
+	         	//toast.setView(edit);
+				toast.setGravity(Gravity.CENTER, 0, y);
+				toast.show();
+				popupWindow.dismiss();
+			}
+		});
+		ll_pop_speech.setOnClickListener(new OnClickListener() {
+			public void onClick(View paramView) {
+				Toast toast =Toast.makeText(activity, "已下载至本地", Toast.LENGTH_LONG);
+				//toast.setView(image);
+	         	//toast.setView(edit);
+				toast.setGravity(Gravity.CENTER, 0, y);
+				toast.show();
+				popupWindow.dismiss();
+			}
+		});
 	}
-	
 	/** 
 	 * 每个ITEM中more按钮对应的点击动作
 	 * */
@@ -354,7 +446,7 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeaderAd
 			int visibleItemCount, int totalItemCount) {
 		// TODO Auto-generated method stub
 		if (view instanceof HeadListView) {
-			Log.d("first", "first:" + view.getFirstVisiblePosition());
+			//Log.d("first", "first:" + view.getFirstVisiblePosition());
 			if(isCityChannel){
 				if(view.getFirstVisiblePosition() == 0){
 					isfirst = true;

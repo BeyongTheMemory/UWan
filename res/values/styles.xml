@@ -82,6 +82,7 @@
     </style>
     <style name="dislike_text">
         <item name="android:textSize">13.0sp</item>
+         <item name="android:gravity">center</item>
         <item name="android:textColor">@drawable/dialog_listpage_text</item>
     </style>
       <style name="PopMenuAnimation" parent="@android:style/Animation">

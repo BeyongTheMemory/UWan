@@ -26,7 +26,7 @@
             android:drawableLeft="@drawable/listpage_more_speech"
             android:drawablePadding="4.0dip"
             android:duplicateParentState="true"
-            android:text="@string/dislike_dlg_lable_speech" />
+            android:text="@string/download" />
     </LinearLayout>
 
     <ImageView

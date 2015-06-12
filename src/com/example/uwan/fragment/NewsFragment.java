@@ -4,14 +4,18 @@ package com.example.uwan.fragment;
  */
 import java.util.ArrayList;
 
+
 import org.w3c.dom.Text;
 
+import com.example.uwan.CityListActivity;
 import com.example.uwan.DetailsActivity;
 import com.example.uwan.R;
 import com.example.uwan.adapte.NewsAdapter;
 import com.example.uwan.bean.NewsEntity;
 import com.example.uwan.tool.Constants;
+import com.example.uwan.tool.DateTools;
 import com.example.uwan.view.HeadListView;
+import com.example.uwan.view.HeadListView.IXListViewListener;
 
 
 import android.app.Activity;
@@ -27,19 +31,21 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class NewsFragment extends Fragment {
+public class NewsFragment extends Fragment implements IXListViewListener{
 	private final static String TAG = "NewsFragment";
 	Activity activity;
 	ArrayList<NewsEntity> newsList = new ArrayList<NewsEntity>();
-	HeadListView mListView;
-	NewsAdapter mAdapter;
+	public HeadListView mListView;
+	public NewsAdapter mAdapter;
 	String text;
 	int channel_id;
+	int iscity;
 	ImageView detail_loading;
 	public final static int SET_NEWSLIST = 0;
 	//Toast提示框
@@ -51,6 +57,7 @@ public class NewsFragment extends Fragment {
 		Bundle args = getArguments();
 		text = args != null ? args.getString("text") : "";
 		channel_id = args != null ? args.getInt("id", 0) : 0;
+		iscity =  args != null ? args.getInt("iscity") : 0;
 		initData();
 		super.onCreate(savedInstanceState);
 	}
@@ -97,6 +104,7 @@ public class NewsFragment extends Fragment {
 		View view = LayoutInflater.from(getActivity()).inflate(R.layout.news_fragment, null);
 		System.out.println(view);
 		mListView = (HeadListView) view.findViewById(R.id.mListView);
+		mListView.setXListViewListener(this);
 		TextView item_textview = (TextView)view.findViewById(R.id.item_textview);
 		detail_loading = (ImageView)view.findViewById(R.id.detail_loading);
 		//Toast提示框
@@ -110,17 +118,18 @@ public class NewsFragment extends Fragment {
 		newsList = Constants.getNewsList();
 	}
 	
-	Handler handler = new Handler() {
+	public Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			switch (msg.what) {
 			case SET_NEWSLIST:
+			//	newsList = Constants.getNewsList();//测试用
 				detail_loading.setVisibility(View.GONE);
 				if(mAdapter == null){
 					mAdapter = new NewsAdapter(activity, newsList);
 					//判断是不是城市的频道
-					if(channel_id == Constants.CHANNEL_CITY){
+					if(iscity ==1){
 						//是城市频道
 						mAdapter.setCityChannel(true);
 						initCityChannel();
@@ -136,16 +145,27 @@ public class NewsFragment extends Fragment {
 							int position, long id) {
 						//进入新闻详情页面
 					Intent intent = new Intent(activity, DetailsActivity.class);
-						if(channel_id == Constants.CHANNEL_CITY){
-							if(position != 0){
-								intent.putExtra("news", mAdapter.getItem(position - 1));
+						if(iscity == 1){//城市列表上面多了一个
+							if(position == 1){//城市选择
+								Intent city = new Intent(activity, CityListActivity.class);
+								startActivity(city);
+							}
+						    else if(position != 0  && position <= mAdapter.getCount()){
+								intent.putExtra("news", mAdapter.getItem(position-2));
 								startActivity(intent);
 								activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+							}else if(position > mAdapter.getCount()){
+								onLoadMore();
 							}
 						}else{
-							intent.putExtra("news", mAdapter.getItem(position));
+							if(position != 0 && position <= mAdapter.getCount()){
+							Log.v("click里的Position",position+"");
+							intent.putExtra("news", mAdapter.getItem(position-1));
 							startActivity(intent);
 							activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+							}else if(position > mAdapter.getCount()){//加载更多
+								onLoadMore();
+							}
 						}
 					}
 				});
@@ -156,6 +176,7 @@ public class NewsFragment extends Fragment {
 			default:
 				break;
 			}
+			
 			super.handleMessage(msg);
 		}
 	};
@@ -169,9 +190,9 @@ public class NewsFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				//城市选择
-			/*	// TODO Auto-generated method stub
+			// TODO Auto-generated method stub
 				Intent intent = new Intent(activity, CityListActivity.class);
-				startActivity(intent);*/
+				startActivity(intent);
 			}
 		});
 		mListView.addHeaderView(headview);
@@ -211,5 +232,42 @@ public class NewsFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		Log.d(TAG, "channel_id = " + channel_id);
+	}
+
+	private void onLoad() {
+		mListView.stopRefresh();
+		mListView.stopLoadMore();
+		mListView.setRefreshTime(DateTools.getNewsDetailsDate(DateTools.getTime()));
+	}
+	@Override
+	public void onRefresh() {
+		handler.postDelayed(new Runnable() {
+			public void run() {
+			
+				// mAdapter.notifyDataSetChanged();
+				//重新设置
+				newsList = Constants.getNewsList();//测试用
+				mAdapter = new NewsAdapter(activity, newsList);
+				mListView.setAdapter(mAdapter);
+				onLoad();
+			}
+		}, 2000);
+		
+	}
+
+	@Override
+	public void onLoadMore() {
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+			ArrayList<NewsEntity>	tempnewsList = Constants.getNewsList();
+			for(NewsEntity tempnew:tempnewsList){
+			newsList.add(tempnew);
+			}
+				mAdapter.notifyDataSetChanged();
+				onLoad();
+			}
+		}, 2000);
+		
 	}
 }

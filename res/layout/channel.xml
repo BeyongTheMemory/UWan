@@ -65,7 +65,9 @@
             <View
                 android:id="@+id/seperate_line2"
                 style="@style/subscribe_seperate_line" />
-
+      <RelativeLayout  android:id="@+id/rl_more_cannel"
+            android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/more_category_text"
                 style="@style/subscribe_more_tip_text"
@@ -73,6 +75,16 @@
                 android:layout_marginLeft="10.0dip"
                 android:text="@string/subscribe_more_category" />
 
+            <ImageButton
+                android:id="@+id/search_ib"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/more_category_text"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10.0dip"
+                android:background="@android:drawable/ic_menu_search"
+                />
+      </RelativeLayout>
             <com.example.uwan.view.OtherGridView
                 android:id="@+id/otherGridView"
                 android:layout_width="fill_parent"

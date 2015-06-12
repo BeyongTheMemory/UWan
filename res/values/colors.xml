@@ -54,4 +54,5 @@
   <color name="transparent">#00000000</color>
     <color name="action_comment_bg">#ffcc3131</color>
     <color name="action_comment_bg_night">#ff791d1d</color>
+    <color name="list_city_item_text">#ff444444</color>
 </resources>

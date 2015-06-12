@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class SQLHelper extends SQLiteOpenHelper {
 	public static final String DB_NAME = "database.db";// 数据库名称
-	public static final int VERSION = 1;
+	public static final int VERSION = 3;
 	
 	public static final String TABLE_CHANNEL = "channel";//数据表 
 
@@ -14,6 +14,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 	public static final String NAME = "name";
 	public static final String ORDERID = "orderId";
 	public static final String SELECTED = "selected";
+	public static final String ISCITY = "isCity";
 	private Context context;
 	public SQLHelper(Context context) {
 		super(context, DB_NAME, null, VERSION);
@@ -32,7 +33,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 				ID + " INTEGER , " +
 				NAME + " TEXT , " +
 				ORDERID + " INTEGER , " +
-				SELECTED + " SELECTED)";
+				SELECTED + " INTEGER ," + ISCITY + " INTEGER)";
 		db.execSQL(sql);
 	}
 

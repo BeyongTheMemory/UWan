@@ -26,7 +26,10 @@ public class ChannelItem implements Serializable {
 	 * 栏目是否选中，及是出现在用户频道中还是待选择中
 	 *  */
 	public Integer selected;
-
+	/**
+	 * 是否是城市频道
+	 */
+    public Integer isCity;
 	public ChannelItem() {
 	}
 
@@ -36,6 +39,14 @@ public class ChannelItem implements Serializable {
 		this.orderId = Integer.valueOf(orderId);
 		this.selected = Integer.valueOf(selected);
 	}
+	public ChannelItem(int id, String name, int orderId,int selected,int iscity) {
+		this.id = Integer.valueOf(id);
+		this.name = name;
+		this.orderId = Integer.valueOf(orderId);
+		this.selected = Integer.valueOf(selected);
+		this.isCity =  Integer.valueOf(iscity);
+	}
+
 
 	public int getId() {
 		return this.id.intValue();
@@ -69,8 +80,20 @@ public class ChannelItem implements Serializable {
 		this.selected = paramInteger;
 	}
 
-	public String toString() {
-		return "ChannelItem [id=" + this.id + ", name=" + this.name
-				+ ", selected=" + this.selected + "]";
+	public Integer getIsCity() {
+		return isCity;
 	}
+
+	public void setIsCity(Integer isCity) {
+		this.isCity = isCity;
+	}
+
+	@Override
+	public String toString() {
+		return "ChannelItem [id=" + id + ", name=" + name + ", orderId="
+				+ orderId + ", selected=" + selected + ", isCity=" + isCity
+				+ "]";
+	}
+
+	
 }

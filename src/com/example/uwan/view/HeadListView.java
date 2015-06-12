@@ -469,4 +469,5 @@ public class HeadListView extends ListView implements OnScrollListener{
 
 		public void onLoadMore();
 	}
+	
 }
