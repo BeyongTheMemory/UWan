@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -207,5 +207,21 @@
         <item name="android:singleLine">true</item>
         <item name="android:includeFontPadding">false</item>
     </style>
-       
+     <style name="draw_icon">
+            <item name="android:layout_width">40dp</item>
+              <item name="android:layout_height">40dp</item>
+     </style>
+     <style name="draw_title_text">
+            <item name="android:layout_width">wrap_content</item>
+             <item name="android:layout_height">wrap_content</item>
+             <item name="android:textColor">@color/white</item>
+             <item name="android:textSize">20sp</item>
+     </style>
+    <style name="draw_title_affiliate_text">
+            <item name="android:layout_width">wrap_content</item>
+             <item name="android:layout_height">wrap_content</item>
+             <item name="android:textColor">@color/white</item>
+             <item name="android:textSize">12sp</item>
+     </style>
+      
 </resources>

@@ -22,4 +22,16 @@
     <string name="xlistview_footer_hint_normal">查看更多</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
     <string name="search_hint">输入关键词</string>
+    <string name="news_ch">新闻</string>
+    <string name="news_en">News</string>
+        <string name="local_ch">本地</string>
+    <string name="local_en">Local</string>
+          <string name="collect_ch">收藏</string>
+    <string name="collect_en">Collect</string>
+        <string name="information_ch">消息</string>
+    <string name="information_en">Message</string>
+      <string name="option_ch">设置</string>
+    <string name="option_en">Option</string>
+    <string name="record_ch">记录</string>
+    <string name="record_en">Record</string>
 </resources>

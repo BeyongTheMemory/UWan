@@ -6,6 +6,7 @@
   <color name="darker_gray">#1f2226</color><!-- 抽屉菜单底色 -->
    <color name="activity_bg_color">#fff5f5f5</color>
   <color name="white">#ffffff</color>
+  <color name="black">#000000</color>
   <color name="gray">#e4e4e4</color>
    <color name="divider_day">#ffdddddd</color>
        <color name="image_loading_bg">#ffefefef</color>
@@ -55,4 +56,6 @@
     <color name="action_comment_bg">#ffcc3131</color>
     <color name="action_comment_bg_night">#ff791d1d</color>
     <color name="list_city_item_text">#ff444444</color>
+    <color name="choose_blue">#556B9C</color>
+    <color name="drawer_login">#383839</color>
 </resources>
