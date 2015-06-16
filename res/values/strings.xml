@@ -15,6 +15,7 @@
     <string name="subscribe_my_category">我的频道</string>
     <string name="subscribe_manager_category_info_2">单击增删频道，长按拖拽排序</string>
     <string name="subscribe_more_category">更多频道</string>
+      <string name="subscribe_add_category">自定义频道</string>
         <string name="xlistview_header_hint_normal">下拉刷新</string>
     <string name="xlistview_header_hint_ready">松开刷新数据</string>
     <string name="xlistview_header_hint_loading">正在加载...</string>
@@ -34,4 +35,5 @@
     <string name="option_en">Option</string>
     <string name="record_ch">记录</string>
     <string name="record_en">Record</string>
+    <string name="new_channel">自定义频道</string>
 </resources>

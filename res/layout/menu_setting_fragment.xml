@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff7f7f7" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+ <FrameLayout
+      android:id="@+id/fl"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/actionbar_dimen"
+      android:background="@drawable/bg_actionbar"
+      >
+             <TextView
+        android:id="@+id/tv_actionbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/actionbar_dimen"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:layout_gravity="center"
+        android:text="@string/option_ch"
+         style="@style/ActionBar.TitleText"
+        android:gravity="center"
+        />
+             <TextView
+        android:id="@+id/back"
+        style="@style/back_view" 
+        android:onClick="doBack"/>
+      </FrameLayout>
+        
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8.0dip"
+            android:layout_marginLeft="15.0dip"
+            android:layout_marginRight="10.0dip"
+            android:layout_marginTop="8.0dip"
+            android:text="摇晃手机"
+            android:textColor="#ff808080"
+            android:textSize="14.0sp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:orientation="vertical" >
+
+            <CheckedTextView
+                android:id="@+id/shake_change_song"
+                android:layout_width="fill_parent"
+                android:layout_height="48.0dip"
+                android:background="@drawable/menu_setting_selector"
+                android:checkMark="@drawable/toggle_button_selector"
+                android:checked="true"
+                android:gravity="center_vertical"
+                android:padding="10.0dip"
+                android:text="摇一摇看新闻"
+                android:textColor="#ff404040"
+                android:textSize="16.0sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8.0dip"
+            android:layout_marginLeft="15.0dip"
+            android:layout_marginRight="10.0dip"
+            android:layout_marginTop="8.0dip"
+            android:text="智能设置"
+            android:textColor="#ff808080"
+            android:textSize="14.0sp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:orientation="vertical" >
+
+            <CheckedTextView
+                android:id="@+id/auto_download_lyric"
+                android:layout_width="fill_parent"
+                android:layout_height="48.0dip"
+                android:background="@drawable/menu_setting_selector"
+                android:checkMark="@drawable/toggle_button_selector"
+                android:checked="true"
+                android:gravity="center_vertical"
+                android:padding="10.0dip"
+                android:text="智能无图"
+                android:textColor="#ff404040"
+                android:textSize="16.0sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8.0dip"
+            android:layout_marginLeft="15.0dip"
+            android:layout_marginRight="10.0dip"
+            android:layout_marginTop="8.0dip"
+            android:text="通知设置"
+            android:textColor="#ff808080"
+            android:textSize="14.0sp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:orientation="vertical" >
+
+            <CheckedTextView
+                android:id="@+id/filter_size"
+                android:layout_width="fill_parent"
+                android:layout_height="48.0dip"
+                 android:background="@drawable/menu_setting_selector"
+                android:checkMark="@drawable/toggle_button_selector"
+                android:checked="true"
+                android:gravity="center_vertical"
+                android:padding="10.0dip"
+                android:text="最新新闻通知"
+                android:textColor="#ff404040"
+                android:textSize="16.0sp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1.0dip"
+                android:background="#cccccc" />
+
+            <CheckedTextView
+                android:id="@+id/filter_time"
+                android:layout_width="fill_parent"
+                android:layout_height="48.0dip"
+                android:checkMark="@drawable/toggle_button_selector"
+                 android:background="@drawable/menu_setting_selector"
+                android:checked="true"
+                android:gravity="center_vertical"
+                android:padding="10.0dip"
+                android:text="新消息通知"
+                android:textColor="#ff404040"
+                android:textSize="16.0sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dip"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/setting_advice_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                 android:background="@drawable/menu_setting_selector"
+                android:padding="12.0dip" >
+
+                <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="我要提意见"
+                    android:textColor="#ff404040"
+                 android:textSize="16.0sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/arrow_right" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1.0dip"
+                android:background="#cccccc" />
+
+            <LinearLayout
+                android:id="@+id/setting_about_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                 android:background="@drawable/menu_setting_selector"
+                android:padding="12.0dip" >
+
+                <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="关于"
+                    android:textColor="#ff404040"
+                    android:textSize="16.0sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/arrow_right" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

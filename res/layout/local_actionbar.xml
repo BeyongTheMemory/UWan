@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <FrameLayout
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/actionbar_dimen"
+      android:background="@drawable/bg_actionbar"
+      >
+
+     <TextView
+        android:id="@+id/back"
+        style="@style/back_view" 
+        android:onClick="doBack"/>
+
+     <ImageView
+        android:id="@+id/sv_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/actionbar_dimen"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:layout_gravity="end"
+        android:background="@android:drawable/ic_menu_search"             
+        android:gravity="center"
+        /> 
+          <TextView
+        android:id="@+id/tv_actionbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/actionbar_dimen"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:layout_gravity="center"
+        android:text="@string/local_ch"
+         style="@style/ActionBar.TitleText"
+        android:gravity="center"
+        />
+
+     
+
+  </FrameLayout>

@@ -7,6 +7,7 @@ import java.util.Map;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 
 public class ChannelSearchActivity extends Activity {
@@ -26,7 +28,7 @@ public class ChannelSearchActivity extends Activity {
 	ArrayList<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
 	
 	ArrayList<String> mListTitle = new ArrayList<String>();
-	ArrayList<String> mListText = new ArrayList<String>();
+	//ArrayList<String> mListText = new ArrayList<String>();
 	
 	SimpleAdapter adapter;
 	
@@ -37,6 +39,18 @@ public class ChannelSearchActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.channel_search);
+        
+        RelativeLayout rd_addchannel = (RelativeLayout)findViewById(R.id.rd_addchannel);
+        rd_addchannel.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent add = new Intent(ChannelSearchActivity.this,AddChannelActivity.class);
+				startActivity(add);
+			}
+        	
+        });
         
         set_eSearch_TextChanged();//设置eSearch搜索框的文本改变时监听器
         
@@ -131,10 +145,9 @@ public class ChannelSearchActivity extends Activity {
 	{
 		int length = mListTitle.size();
 		for(int i = 0; i < length; ++i){
-			if(mListTitle.get(i).contains(data) || mListText.get(i).contains(data)){
+			if(mListTitle.get(i).contains(data)){
 				Map<String,Object> item = new HashMap<String,Object>();
 				item.put("title", mListTitle.get(i));
-		        item.put("text",  mListText.get(i));
 		        mDataSubs.add(item);
 			}
 		}
@@ -164,21 +177,37 @@ public class ChannelSearchActivity extends Activity {
 
     private void getmData(ArrayList<Map<String, Object>> mDatas)
     {
-    	Map<String, Object> item = new HashMap<String, Object>();
-    	mListTitle.add("这是一个标题!");
-    	mListText.add("这是文本.\n2014.09.18.19.50");
+    	mListTitle.add("财经");
+    	mListTitle.add("社会");
+    	mListTitle.add("经济");
+    	mListTitle.add("军事");
+    	mListTitle.add("娱乐");
+    	mListTitle.add("房产");
+    	mListTitle.add("汽车");
+    	mListTitle.add("美容");
+    	mListTitle.add("体育");
+    	mListTitle.add("星座");
+    	mListTitle.add("健康");
+    	mListTitle.add("时尚");
+    	mListTitle.add("搞笑");
+    	mListTitle.add("国际");
+    	mListTitle.add("婚姻");
+    	mListTitle.add("职场");
     	
-    	item.put("title", mListTitle.get(0));
-    	item.put("text", mListText.get(0));
-    	mDatas.add(item);
+    	for(String title:mListTitle){
+    		Map<String, Object> item = new HashMap<String, Object>();
+    		item.put("title", title);
+    		mDatas.add(item);
+    	}
     	
-    	
-    	mListTitle.add("这是另一个标题!");
-    	mListText.add("这是另一个文本.\n2014.09.18.19.51");
-    	
-    	item = new HashMap<String, Object>();
-    	item.put("title", mListTitle.get(1));
-    	item.put("text", mListText.get(1));
-    	mDatas.add(item);
+    	//item.put("title", mListTitle.get(0));
+//    	mDatas.add(item);
+//    	
+//    	
+//    	mListTitle.add("这是另一个标题!");
+//    	
+//    	item = new HashMap<String, Object>();
+//    	item.put("title", mListTitle.get(1));
+//    	mDatas.add(item);
     }
 }

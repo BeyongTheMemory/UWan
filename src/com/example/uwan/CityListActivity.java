@@ -10,12 +10,10 @@ import com.example.uwan.bean.CityEntity;
 import com.example.uwan.tool.Constants;
 import com.example.uwan.view.HeadListView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -52,7 +50,7 @@ public class CityListActivity extends BaseActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				//保存，丫没做
+				//保存
 //				Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
 //				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

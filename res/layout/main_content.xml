@@ -8,6 +8,7 @@
 
 
     <LinearLayout
+        android:id="@+id/ll_title"
         android:layout_width="match_parent"
         android:layout_height="40.0dip"
         android:background="#fff3f3f3"

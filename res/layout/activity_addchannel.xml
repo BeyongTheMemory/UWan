@@ -1,0 +1,106 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+    <FrameLayout
+      android:id="@+id/fl"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/actionbar_dimen"
+      android:background="@drawable/bg_actionbar"
+      >
+             <TextView
+        android:id="@+id/tv_actionbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/actionbar_dimen"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:layout_gravity="center"
+        android:text="@string/new_channel"
+         style="@style/ActionBar.TitleText"
+        android:gravity="center"
+        />
+             <TextView
+        android:id="@+id/back"
+        style="@style/back_view" 
+        android:onClick="doBack"/>
+      </FrameLayout>
+    <TextView
+        android:id="@+id/add_tag_dialg_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="添加关键词"
+        android:textColor="#6cd2c5"
+        android:textSize="18sp" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#6cd2c5" />
+
+   
+    <com.example.uwan.view.FlowLayout
+        android:id="@+id/tag_vessel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/add_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:src="@drawable/mylablepen" />
+    </com.example.uwan.view.FlowLayout>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="长按关键词可以删除" />
+    
+        <TextView
+        android:id="@+id/add_tag_dialg_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="输入频道名称"
+        android:textColor="#6cd2c5"
+        android:textSize="18sp" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#6cd2c5" />
+
+    <EditText
+        android:id="@+id/add_tag_dialg_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:ems="10"
+        android:hint="请输入频道名称"
+        android:paddingBottom="16dp"
+        android:paddingLeft="12dp"
+        android:paddingTop="28dp" />
+    
+ 
+
+
+    
+        <RelativeLayout 
+              android:layout_width="300dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:background="#6cd2c5">
+             <TextView
+            android:id="@+id/add_tag_dialg_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="确     定"
+            android:textColor="#ffffff" />
+        </RelativeLayout>
+    
+
+</LinearLayout>

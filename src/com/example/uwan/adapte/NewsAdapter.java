@@ -385,7 +385,7 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeaderAd
 		});
 		ll_pop_favor.setOnClickListener(new OnClickListener() {
 			public void onClick(View paramView) {
-				Toast toast =Toast.makeText(activity, "已收藏", Toast.LENGTH_LONG);
+				Toast toast =Toast.makeText(activity, "已收藏,可在收藏界面查看", Toast.LENGTH_LONG);
 				//toast.setView(image);
 	         	//toast.setView(edit);
 				toast.setGravity(Gravity.CENTER, 0, y);

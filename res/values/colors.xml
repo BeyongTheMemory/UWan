@@ -58,4 +58,6 @@
     <color name="list_city_item_text">#ff444444</color>
     <color name="choose_blue">#556B9C</color>
     <color name="drawer_login">#383839</color>
+    <color name="time_line_bg">#b3b3b3</color>
+    <color name="head_line_bg">#cccccc</color>
 </resources>

@@ -5,6 +5,9 @@ import static android.view.Gravity.START;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 
 
@@ -15,21 +18,35 @@ import com.example.uwan.bean.ChannelManage;
 import com.example.uwan.fragment.NewsFragment;
 import com.example.uwan.tool.BaseTools;
 import com.example.uwan.tool.DateTools;
+import com.example.uwan.tool.Util;
 import com.example.uwan.view.ColumnHorizontalScrollView;
 import com.example.uwan.view.HeadListView.IXListViewListener;
 import com.example.uwan.widget.DrawerArrowDrawable;
 
+import com.tencent.connect.UserInfo;
+import com.tencent.connect.auth.QQToken;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
+
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -37,6 +54,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -73,13 +91,24 @@ public class MainActivity extends FragmentActivity{
 		/** 调整返回的RESULTCODE */
 		public final static int CHANNELRESULT = 10;
 		private Handler mHandler;
-    @Override
+		
+		private ImageButton ib_qq;//QQ登陆
+    @SuppressLint("NewApi") @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mScreenWidth = BaseTools.getWindowsWidth(this);
 		mItemWidth = mScreenWidth / 7;// 一个Item宽度为屏幕的1/7
-		mHandler = new Handler();
+		mHandler = new Handler(){
+			@Override
+			public void handleMessage(Message msg){
+				if(msg.what == 1){
+					Bitmap bitmap = (Bitmap) msg.obj;
+					Drawable d = new BitmapDrawable(bitmap);
+					ib_qq.setBackground(d);
+				}
+			}
+		};
         initActionBar();//初始化头部
         initContent();
     }
@@ -277,9 +306,192 @@ public class MainActivity extends FragmentActivity{
 //       });
 	 	
 	}
+	Tencent mTencent;
+	// 这里是调用QQ登录的关键代码
+	public void LoginQQ() {
+		// 这里的APP_ID请换成你应用申请的APP_ID，我这里使用的是DEMO中官方提供的测试APP_ID 222222
+		String mAppid = "222222";
+		// 第一个参数就是上面所说的申请的APPID，第二个是全局的Context上下文，这句话实现了调用QQ登录
+		 mTencent = Tencent.createInstance(mAppid, getApplicationContext());
+		/**
+		 * 通过这句代码，SDK实现了QQ的登录，这个方法有三个参数，第一个参数是context上下文，第二个参数SCOPO
+		 * 是一个String类型的字符串，表示一些权限 官方文档中的说明：应用需要获得哪些API的权限，由“，”分隔。例如：SCOPE =
+		 * “get_user_info,add_t”；所有权限用“all”
+		 * 第三个参数，是一个事件监听器，IUiListener接口的实例，这里用的是该接口的实现类
+		 */
+		mTencent.login(MainActivity.this, "all", new BaseUiListener());
 
-    
+	}
+	/**
+	 * 当自定义的监听器实现IUiListener接口后，必须要实现接口的三个方法， onComplete onCancel onError
+	 * 分别表示第三方登录成功，取消 ，错误。
+	 */
+	ProgressDialog dialog = null;
+	private class BaseUiListener implements IUiListener {
+
+		public void onCancel() {
+			// TODO Auto-generated method stub
+
+		}
+
+		public void onComplete(Object response) {
+		
+			dialog = new ProgressDialog(MainActivity.this);
+			 dialog.setMessage("正在登录");
+			dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			
+			// dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+			dialog.show();
+			// TODO Auto-generated method stub
+			// Toast.makeText(getApplicationContext(), "登录成功", 0).show();
+			try {
+				// 获得的数据是JSON格式的，获得你想获得的内容
+				// 如果你不知道你能获得什么，看一下下面的LOG
+				Log.e("uwan", "-------------" + response.toString());
+				String openidString = ((JSONObject) response).getString("openid");
+				// openidTextView.setText(openidString);
+				Log.e("uwan", "-------------" + openidString);
+				// access_token= ((JSONObject)
+				// response).getString("access_token"); //expires_in =
+				// ((JSONObject) response).getString("expires_in");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			/**
+			 * 到此已经获得OpneID以及其他你想获得的内容了
+			 * QQ登录成功了，我们还想获取一些QQ的基本信息，比如昵称，头像什么的，这个时候怎么办？
+			 * sdk给我们提供了一个类UserInfo，这个类中封装了QQ用户的一些信息，我么可以通过这个类拿到这些信息
+			 * 如何得到这个UserInfo类呢？
+			 */
+			QQToken qqToken = mTencent.getQQToken();
+			UserInfo info = new UserInfo(getApplicationContext(), qqToken);
+			// 这样我们就拿到这个类了，之后的操作就跟上面的一样了，同样是解析JSON
+			info.getUserInfo(new IUiListener() {
+
+				public void onComplete(final Object response) {
+					// TODO Auto-generated method stub
+					Log.e("uwan", "---------------111111");
+					Message msg = new Message();
+					msg.obj = response;
+					msg.what = 0;
+					mHandler.sendMessage(msg);
+					// nicknameString = response.toString();
+					Log.e("uwan", "-----111---" + response.toString());
+					/**
+					 * 由于图片需要下载所以这里使用了线程，如果是想获得其他文字信息直接 在mHandler里进行操作
+					 * 
+					 */
+
+					new Thread() {
+						@Override
+						public void run() {
+						//	 TODO Auto-generated method stub
+							JSONObject json = (JSONObject) response;
+							Bitmap bitmap = null;
+							try {
+								bitmap = Util.getbitmap(json
+										.getString("figureurl_qq_2"));
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							Message msg = new Message();
+							msg.obj = bitmap;
+							msg.what = 1;
+							mHandler.sendMessage(msg);
+							dialog.dismiss();
+//							customView.setVisibility(View.INVISIBLE);
+						}
+					}.start();
+				}
+
+				public void onCancel() {
+					Log.e("Tag", "--------------111112");
+					// TODO Auto-generated method stub
+				}
+
+				public void onError(UiError arg0) {
+					// TODO Auto-generated method stub
+					Log.e("Tag", "-111113" + ":" + arg0.toString());
+				}
+
+			});
+
+			// startActivity(new
+			// Intent(MainActivity.this,PersionalActivity.class));
+		}
+
+		public void onError(UiError arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+	}
     private void initLeftMenu(){
+        ib_qq = (ImageButton)findViewById(R.id.ib_qq);
+    	ib_qq.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				LoginQQ();
+			}
+    		
+    	});
+    	
+    	
+     	RelativeLayout 	rl_local= (RelativeLayout)findViewById(R.id.rl_local);
+    	rl_local.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent_local = new  Intent(MainActivity.this, LocalActivity.class);
+				startActivity(intent_local);
+			}
+    		
+    	});
+    	
+    	
+    	RelativeLayout 	rl_collect= (RelativeLayout)findViewById(R.id.rl_collect);
+    	rl_collect.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent_collect = new  Intent(MainActivity.this, CollectActivity.class);
+				startActivity(intent_collect);
+			}
+    		
+    	});
+    	
+    	RelativeLayout rl_record= (RelativeLayout)findViewById(R.id.rl_record);
+    	rl_record.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent_record = new  Intent(MainActivity.this, RecordActivity.class);
+				startActivity(intent_record);
+			}
+    		
+    	});
+    	
+    	
+    	RelativeLayout rl_option= (RelativeLayout)findViewById(R.id.rl_option);
+    	rl_option.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent_record = new  Intent(MainActivity.this, MenuSettingActivity.class);
+				startActivity(intent_record);
+			}
+    		
+    	});
+    	
+    	
     	final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         final ImageView imageView = (ImageView) findViewById(R.id.drawer_indicator);
         final Resources resources = getResources();

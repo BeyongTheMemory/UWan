@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.ricawinter.dynamicsearch.MainActivity$PlaceholderFragment" >
-    
+  
     <!--  to acquire focus -->
     	<LinearLayout
 		android:focusable="true"
@@ -49,13 +49,39 @@
         
     	
     </RelativeLayout>
-
+      <RelativeLayout 
+           android:id="@+id/rd_addchannel"
+               android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+             android:layout_below="@+id/top"
+             android:layout_marginTop="5dp"
+           >
+       <TextView
+                    android:id="@+id/tv_addchannel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/ib_addchannel"
+                    android:text="@string/subscribe_add_category"
+                    android:textColor="@color/subscribe_tip_text"
+                    android:textSize="15.0sp" />
+       <ImageButton 
+             android:id="@+id/ib_addchannel"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:background="@android:drawable/ic_menu_add"
+           android:layout_alignParentRight="true"
+           android:layout_marginRight="@dimen/activity_horizontal_margin"
+           android:layout_alignTop="@+id/tv_addchannel"
+           android:layout_alignBottom="@+id/tv_addchannel"
+                    />
+       </RelativeLayout>
      <ListView
          android:id="@+id/mListView"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:layout_alignParentLeft="true"
-         android:layout_below="@+id/top" >
+         android:layout_marginTop="@dimen/activity_horizontal_margin"
+         android:layout_below="@+id/rd_addchannel" >
      </ListView>
 
 </RelativeLayout>
