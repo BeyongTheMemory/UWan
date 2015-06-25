@@ -1,49 +1,33 @@
 package com.example.uwan;
 
 
-import static android.view.Gravity.START;
-
 import java.util.ArrayList;
 
 
 
 
 import com.example.uwan.adapte.NewsFragmentPagerAdapter;
-import com.example.uwan.app.AppApplication;
-import com.example.uwan.bean.ChannelItem;
-import com.example.uwan.bean.ChannelManage;
 import com.example.uwan.fragment.NewsFragment;
 import com.example.uwan.tool.BaseTools;
-import com.example.uwan.tool.DateTools;
 import com.example.uwan.view.ColumnHorizontalScrollView;
-import com.example.uwan.view.HeadListView.IXListViewListener;
 import com.example.uwan.widget.DrawerArrowDrawable;
 
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.SearchView;
-import android.widget.Toast;
-import android.widget.SearchView.OnCloseListener;
-import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 
 public class SearchActivity extends FragmentActivity{
@@ -51,10 +35,10 @@ public class SearchActivity extends FragmentActivity{
 	  private float offset;
 	  private boolean flipped;
 	  private ViewPager mViewPager;//显示新闻概要的view
-	  private ColumnHorizontalScrollView mColumnHorizontalScrollView;
-	  private LinearLayout mRadioGroup_content;//放频道的容器
-	  private LinearLayout ll_more_columns;//添加新频道
-	  private RelativeLayout rl_column;//整个频道容器
+	 // private ColumnHorizontalScrollView mColumnHorizontalScrollView;
+	//  private LinearLayout mRadioGroup_content;//放频道的容器
+	 // private LinearLayout ll_more_columns;//添加新频道
+	//  private RelativeLayout rl_column;//整个频道容器
 	  private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 	  /** 当前选中的栏目*/
 		private int columnSelectIndex = 0;
@@ -67,7 +51,7 @@ public class SearchActivity extends FragmentActivity{
 		/** 右阴影部分 */
 		public ImageView shade_right;
 		/** 用户选择的新闻分类列表*/
-		private ArrayList<ChannelItem> userChannelList=new ArrayList<ChannelItem>();
+	//	private ArrayList<ChannelItem> userChannelList=new ArrayList<ChannelItem>();
 		/** 请求CODE */
 		public final static int CHANNELREQUEST = 1;
 		/** 调整返回的RESULTCODE */
@@ -76,7 +60,7 @@ public class SearchActivity extends FragmentActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_local);
         mScreenWidth = BaseTools.getWindowsWidth(this);
 		mItemWidth = mScreenWidth / 7;// 一个Item宽度为屏幕的1/7
 		mHandler = new Handler();
@@ -108,49 +92,58 @@ public class SearchActivity extends FragmentActivity{
         return true;
     }
 	private long mExitTime;
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-				if ((System.currentTimeMillis() - mExitTime) > 2000) {
-					Toast.makeText(this, "在按一次退出",
-							Toast.LENGTH_SHORT).show();
-					mExitTime = System.currentTimeMillis();
-				} else {
-					finish();
-				}
-			return true;
-		}
-		//拦截MENU按钮点击事件，让他无任何操作
-		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			return true;
-		}
-		return super.onKeyDown(keyCode, event);
-	}
+//	@Override
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		// TODO Auto-generated method stub
+//		if (keyCode == KeyEvent.KEYCODE_BACK) {
+//				if ((System.currentTimeMillis() - mExitTime) > 2000) {
+//					Toast.makeText(this, "在按一次退出",
+//							Toast.LENGTH_SHORT).show();
+//					mExitTime = System.currentTimeMillis();
+//				} else {
+//					finish();
+//				}
+//			return true;
+//		}
+//		//拦截MENU按钮点击事件，让他无任何操作
+//		if (keyCode == KeyEvent.KEYCODE_MENU) {
+//			return true;
+//		}
+//		return super.onKeyDown(keyCode, event);
+//	}
 	
 	/**
 	 * 
 	 */
 	private void initContent(){
-		mColumnHorizontalScrollView =  (ColumnHorizontalScrollView)findViewById(R.id.mColumnHorizontalScrollView);
-		mRadioGroup_content = (LinearLayout) findViewById(R.id.mRadioGroup_content);
+		TextView tv_actionbar_title = (TextView)findViewById(R.id.tv_actionbar_title);
+		tv_actionbar_title.setText("搜索");
+		
+		
+		//mColumnHorizontalScrollView =  (ColumnHorizontalScrollView)findViewById(R.id.mColumnHorizontalScrollView);
+		//mRadioGroup_content = (LinearLayout) findViewById(R.id.mRadioGroup_content);
 		mViewPager = (ViewPager) findViewById(R.id.mViewPager);
 		shade_left = (ImageView) findViewById(R.id.shade_left);
 		shade_right = (ImageView) findViewById(R.id.shade_right);
-		rl_column = (RelativeLayout) findViewById(R.id.rl_column);
-		ll_more_columns = (LinearLayout) findViewById(R.id.ll_more_columns);
-		ll_more_columns.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View arg0) {
-				//频道管理
-				Intent intent_channel = new  Intent(getApplicationContext(), ChannelActivity.class);
-				startActivityForResult(intent_channel, CHANNELREQUEST);
-				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-			}
-			
-		});
+		//rl_column = (RelativeLayout) findViewById(R.id.rl_column);
+		//ll_more_columns = (LinearLayout) findViewById(R.id.ll_more_columns);
+		//ll_more_columns.setOnClickListener(new OnClickListener(){
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				//频道管理
+//				Intent intent_channel = new  Intent(getApplicationContext(), ChannelActivity.class);
+//				startActivityForResult(intent_channel, CHANNELREQUEST);
+//				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//			}
+//			
+//		});
 		setChangelView();
+		
+//		LinearLayout ll_title = (LinearLayout)findViewById(R.id.ll_title);
+//		ll_title.setVisibility(View.INVISIBLE);
+//        View category_line = (View)findViewById(R.id.category_line);
+//        category_line.setVisibility(View.INVISIBLE);
 	}
 	/** 
 	 *  当栏目项发生变化时候调用
@@ -163,15 +156,16 @@ public class SearchActivity extends FragmentActivity{
 	
 	/** 获取Column栏目 数据*/
 	private void initColumnData() {
-		userChannelList = ((ArrayList<ChannelItem>)ChannelManage.getManage(AppApplication.getApp().getSQLHelper()).getUserChannel());
+	//	userChannelList = ((ArrayList<ChannelItem>)ChannelManage.getManage(AppApplication.getApp().getSQLHelper()).getUserChannel());
 	}
 	/** 
 	 *  初始化Column栏目项
 	 * */
 	private void initTabColumn() {
-		mRadioGroup_content.removeAllViews();
-		int count =  userChannelList.size();
-		mColumnHorizontalScrollView.setParam(this, mScreenWidth, mRadioGroup_content, shade_left, shade_right, ll_more_columns, rl_column);
+		//mRadioGroup_content.removeAllViews();
+	//	int count =  userChannelList.size();
+		int count = 0;
+		//mColumnHorizontalScrollView.setParam(this, mScreenWidth, mRadioGroup_content, shade_left, shade_right, ll_more_columns, rl_column);
 		for(int i = 0; i< count; i++){
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mItemWidth , LayoutParams.WRAP_CONTENT);
 			params.leftMargin = 5;
@@ -184,28 +178,28 @@ public class SearchActivity extends FragmentActivity{
 			columnTextView.setGravity(Gravity.CENTER);
 			columnTextView.setPadding(5, 5, 5, 5);
 			columnTextView.setId(i);
-			columnTextView.setText(userChannelList.get(i).getName());
+			columnTextView.setText("本地");
 			columnTextView.setTextColor(getResources().getColorStateList(R.drawable.top_category_scroll_text_color_day));
 			if(columnSelectIndex == i){
 				columnTextView.setSelected(true);
 			}
-			columnTextView.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-			          for(int i = 0;i < mRadioGroup_content.getChildCount();i++){
-				          View localView = mRadioGroup_content.getChildAt(i);
-				          if (localView != v)
-				        	  localView.setSelected(false);
-				          else{
-				        	  localView.setSelected(true);
-				              mViewPager.setCurrentItem(i);
-				          }
-			          }
-			          Toast.makeText(getApplicationContext(), userChannelList.get(v.getId()).getName(), Toast.LENGTH_SHORT).show();
-				}
-			});
-			mRadioGroup_content.addView(columnTextView, i ,params);
+//			columnTextView.setOnClickListener(new OnClickListener() {
+//				
+//				@Override
+//				public void onClick(View v) {
+//			          for(int i = 0;i < mRadioGroup_content.getChildCount();i++){
+//				          View localView = mRadioGroup_content.getChildAt(i);
+//				          if (localView != v)
+//				        	  localView.setSelected(false);
+//				          else{
+//				        	  localView.setSelected(true);
+//				              mViewPager.setCurrentItem(i);
+//				          }
+//			          }
+//			          //Toast.makeText(getApplicationContext(), userChannelList.get(v.getId()).getName(), Toast.LENGTH_SHORT).show();
+//				}
+//			});
+		//	mRadioGroup_content.addView(columnTextView, i ,params);
 		}
 	}
 	
@@ -214,12 +208,13 @@ public class SearchActivity extends FragmentActivity{
 	 * */
 	private void initFragment() {
 		fragments.clear();//清空
-		int count =  userChannelList.size();
+		//int count =  userChannelList.size();
+		int count = 1;
 		for(int i = 0; i< count;i++){
 			Bundle data = new Bundle();
-    		data.putString("text", userChannelList.get(i).getName());
-    		data.putInt("id", userChannelList.get(i).getId());
-    		data.putInt("iscity",userChannelList.get(i).getIsCity());
+    		data.putString("text", "本地");
+    		data.putInt("id", 0);
+    		data.putInt("iscity",0);
 			NewsFragment newfragment = new NewsFragment();
 			newfragment.setArguments(data);
 			fragments.add(newfragment);
@@ -233,14 +228,22 @@ public class SearchActivity extends FragmentActivity{
 	
 	
 	private void initActionBar(){
-		 initLeftMenu();
+	//	 initLeftMenu();
 	     initSeachView();
 	}
 	
     private void initSeachView() {
-	//	final SearchView searchView = (SearchView)findViewById(R.id.sv);
-		final TextView tv_actionbar_title = (TextView)findViewById(R.id.tv_actionbar_title);
-		tv_actionbar_title.setVisibility(View.VISIBLE);
+		final ImageView searchView = (ImageView)findViewById(R.id.sv_iv);
+	//	 TextView tv_actionbar_title = (TextView)findViewById(R.id.tv_actionbar_title);
+		searchView.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				onSearchRequested();// 激活搜索对话框
+			}
+			
+		});
 //		searchView.setSubmitButtonEnabled(true);
 //		 searchView.setOnQueryTextListener(new OnQueryTextListener() {
 //   
@@ -271,42 +274,68 @@ public class SearchActivity extends FragmentActivity{
 	}
 
     
-    private void initLeftMenu(){
-    	final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        final ImageView imageView = (ImageView) findViewById(R.id.drawer_indicator);
-        final Resources resources = getResources();
-
-        drawerArrowDrawable = new DrawerArrowDrawable(resources);
-        drawerArrowDrawable.setStrokeColor(resources.getColor(R.color.light_gray));
-        imageView.setImageDrawable(drawerArrowDrawable);
-
-        drawer.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-          @Override public void onDrawerSlide(View drawerView, float slideOffset) {
-            offset = slideOffset;
-
-            // Sometimes slideOffset ends up so close to but not quite 1 or 0.
-            if (slideOffset >= .995) {
-              flipped = true;
-              drawerArrowDrawable.setFlip(flipped);
-            } else if (slideOffset <= .005) {
-              flipped = false;
-              drawerArrowDrawable.setFlip(flipped);
-            }
-
-            drawerArrowDrawable.setParameter(offset);
-          }
-        });
-
-        imageView.setOnClickListener(new View.OnClickListener() {
-          @Override public void onClick(View v) {
-            if (drawer.isDrawerVisible(START)) {
-              drawer.closeDrawer(START);
-            } else {
-              drawer.openDrawer(START);
-            }
-          }
-        });
-    }
+//    private void initLeftMenu(){
+//    	RelativeLayout rl_record= (RelativeLayout)findViewById(R.id.rl_record);
+//    	rl_record.setOnClickListener(new OnClickListener(){
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				// TODO Auto-generated method stub
+//				Intent intent_record = new  Intent(LocalActivity.this, RecordActivity.class);
+//				startActivity(intent_record);
+//			}
+//    		
+//    	});
+//    	
+//    	
+//    	RelativeLayout rl_option= (RelativeLayout)findViewById(R.id.rl_option);
+//    	rl_option.setOnClickListener(new OnClickListener(){
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				// TODO Auto-generated method stub
+//				Intent intent_record = new  Intent(LocalActivity.this, MenuSettingActivity.class);
+//				startActivity(intent_record);
+//			}
+//    		
+//    	});
+//    	
+//    	
+//    	final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        final ImageView imageView = (ImageView) findViewById(R.id.drawer_indicator);
+//        final Resources resources = getResources();
+//
+//        drawerArrowDrawable = new DrawerArrowDrawable(resources);
+//        drawerArrowDrawable.setStrokeColor(resources.getColor(R.color.light_gray));
+//        imageView.setImageDrawable(drawerArrowDrawable);
+//
+//        drawer.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+//          @Override public void onDrawerSlide(View drawerView, float slideOffset) {
+//            offset = slideOffset;
+//
+//            // Sometimes slideOffset ends up so close to but not quite 1 or 0.
+//            if (slideOffset >= .995) {
+//              flipped = true;
+//              drawerArrowDrawable.setFlip(flipped);
+//            } else if (slideOffset <= .005) {
+//              flipped = false;
+//              drawerArrowDrawable.setFlip(flipped);
+//            }
+//
+//            drawerArrowDrawable.setParameter(offset);
+//          }
+//        });
+//
+//        imageView.setOnClickListener(new View.OnClickListener() {
+//          @Override public void onClick(View v) {
+//            if (drawer.isDrawerVisible(START)) {
+//              drawer.closeDrawer(START);
+//            } else {
+//              drawer.openDrawer(START);
+//            }
+//          }
+//        });
+//    }
 	/** 
 	 *  ViewPager切换监听方法
 	 * */
@@ -331,28 +360,28 @@ public class SearchActivity extends FragmentActivity{
 	 *  选择的Column里面的Tab
 	 * */
 	private void selectTab(int tab_postion) {
-		columnSelectIndex = tab_postion;
-		for (int i = 0; i < mRadioGroup_content.getChildCount(); i++) {
-			View checkView = mRadioGroup_content.getChildAt(tab_postion);
-			int k = checkView.getMeasuredWidth();
-			int l = checkView.getLeft();
-			int i2 = l + k / 2 - mScreenWidth / 2;
-			// rg_nav_content.getParent()).smoothScrollTo(i2, 0);
-			mColumnHorizontalScrollView.smoothScrollTo(i2, 0);
-			// mColumnHorizontalScrollView.smoothScrollTo((position - 2) *
-			// mItemWidth , 0);
-		}
-		//判断是否选中
-		for (int j = 0; j <  mRadioGroup_content.getChildCount(); j++) {
-			View checkView = mRadioGroup_content.getChildAt(j);
-			boolean ischeck;
-			if (j == tab_postion) {
-				ischeck = true;
-			} else {
-				ischeck = false;
-			}
-			checkView.setSelected(ischeck);
-		}
+//		columnSelectIndex = tab_postion;
+//		for (int i = 0; i < mRadioGroup_content.getChildCount(); i++) {
+//			View checkView = mRadioGroup_content.getChildAt(tab_postion);
+//			int k = checkView.getMeasuredWidth();
+//			int l = checkView.getLeft();
+//			int i2 = l + k / 2 - mScreenWidth / 2;
+//			// rg_nav_content.getParent()).smoothScrollTo(i2, 0);
+//			mColumnHorizontalScrollView.smoothScrollTo(i2, 0);
+//			// mColumnHorizontalScrollView.smoothScrollTo((position - 2) *
+//			// mItemWidth , 0);
+//		}
+//		//判断是否选中
+//		for (int j = 0; j <  mRadioGroup_content.getChildCount(); j++) {
+//			View checkView = mRadioGroup_content.getChildAt(j);
+//			boolean ischeck;
+//			if (j == tab_postion) {
+//				ischeck = true;
+//			} else {
+//				ischeck = false;
+//			}
+//			checkView.setSelected(ischeck);
+//		}
 	}
 
 }

@@ -250,6 +250,7 @@ public class MainActivity extends FragmentActivity{
     		data.putInt("id", userChannelList.get(i).getId());
     		data.putInt("iscity",userChannelList.get(i).getIsCity());
 			NewsFragment newfragment = new NewsFragment();
+			newfragment.setChannel(userChannelList.get(i).getName());
 			newfragment.setArguments(data);
 			fragments.add(newfragment);
 		}

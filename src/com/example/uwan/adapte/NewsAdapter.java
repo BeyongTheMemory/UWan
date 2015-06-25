@@ -485,9 +485,11 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeaderAd
 	public void configureHeader(View header, int position, int alpha) {
 		int realPosition = position;
 		int section = getSectionForPosition(realPosition);
+		if(section > -1){
 		String title = (String) getSections()[section];
 		((TextView) header.findViewById(R.id.section_text)).setText(title);
 		((TextView) header.findViewById(R.id.section_day)).setText("½ñÌì");
+		}
 	}
 
 	@Override

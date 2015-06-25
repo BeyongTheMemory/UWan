@@ -16,6 +16,21 @@ import org.jsoup.select.Elements;
 
 
 public class NewsDetailsService {
+	public static String getComment(String url, String news_title,
+			String news_date) {
+		Document document;
+		 String data ="";
+		try {
+			document = Jsoup.connect(url).timeout(9000).get();
+			 data =   document.toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	   
+		return data;
+	}
+	
 	public static String getNewsDetails(String url, String news_title,
 			String news_date) {
 //		String data = "<body>" +
@@ -39,7 +54,13 @@ public class NewsDetailsService {
 			data = document.toString() + "<style type=\"text/css\">ul{ margin:0; padding:0; list-style-type:none;} " +
 					"ul#navlist{font:12px verdana;padding-bottom: 13px;}ul#navlist li span{ background: #FBFBFB;}ul#navlist li{float: left; height: 30px; border: 0px solid #cccccc; width: 100%;}"
 				+"ul#navlist .list1{border-bottom: 1px solid #cccccc;width: 100%;margin-bottom: -15px;}#navlist a{display: block;color: #666;text-decoration: none;padding: 6px 5px;width: 100%;text-align: center;}" +
-				"</style><ul id=\"navlist\"><li class=\"list1\"></li><li class=\"list2\"><a href=\"\"><span>内容来自网络，不代表UWan新闻观点</span></a></li></ul>";
+				"</style><ul id=\"navlist\"><li class=\"list1\"></li><li class=\"list2\"><a href=\"\"><span>内容来自网络，不代表UWan新闻观点</span></a></li></ul>"+"javascript:(function(){"
+				+ "var objs = document.getElementsByTagName(\"img\");"
+				+ "var imgurl=''; " + "for(var i=0;i<objs.length;i++)  " + "{"
+				+ "imgurl+=objs[i].src+',';"
+				+ "    objs[i].onclick=function()  " + "    {  "
+				+ "        window.imagelistner.openImage(imgurl);  "
+				+ "    }  " + "}" + "})()";
 
 
 			//System.out.println(document.toString());

@@ -48,6 +48,8 @@
         </activity>
           <activity android:name="com.example.uwan.AddChannelActivity" >
         </activity>
+         <activity android:name="com.example.uwan.CommentActivity" >
+        </activity>
           <activity android:name="com.example.uwan.LocalActivity">
                  <meta-data
                 android:name="android.app.default_searchable"

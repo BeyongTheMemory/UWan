@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -60,11 +61,12 @@ public class DetailsActivity extends BaseActivity {
 	/* 获取传递过来的数据 */
 	private void getData() {
 		news = (NewsEntity) getIntent().getSerializableExtra("news");
+		news_url = "http://sina.cn/";
 		//news_url = news.getSource_url();
-		news_url = "http://top.sina.cn/finance/2015-06-01/tnews-iawzuney6528431.d.html?vt=4&pos=108";
 		news_title = news.getTitle();
 		System.out.println(news.getTitle());
 		//news_title = "测试";
+		System.out.println(news_url);
 		System.out.println(news.getSource());
 		//news_source = news.getSource();
 	   news_source = "网站";
@@ -108,8 +110,17 @@ public class DetailsActivity extends BaseActivity {
 	//	title.setText(news_url);
 		title.setText(news_title);
 		//评论条数
-		action_comment_count.setText(String.valueOf(news.getCommentNum()));
-		action_comment_count.setText("99+");
+		action_comment_count.setText((news.getCommentNum() < 99)?String.valueOf(news.getCommentNum()):"99+");
+		FrameLayout fl_comment =(FrameLayout)findViewById(R.id.fl_comment);
+		fl_comment.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				Intent i = new Intent(DetailsActivity.this,CommentActivity.class);
+				startActivity(i);
+			}
+			
+		});
 		
 		//分享
 		action_repost =  (ImageView)findViewById(R.id.action_repost);

@@ -2,18 +2,30 @@ package com.example.uwan.fragment;
 /**
  * 所有新闻概要展示fragment
  */
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.w3c.dom.Text;
 
 import com.example.uwan.CityListActivity;
 import com.example.uwan.DetailsActivity;
 import com.example.uwan.R;
 import com.example.uwan.adapte.NewsAdapter;
+import com.example.uwan.asyncTask.GetNewsAsync;
 import com.example.uwan.bean.NewsEntity;
 import com.example.uwan.tool.Constants;
 import com.example.uwan.tool.DateTools;
+import com.example.uwan.tool.JsonTools;
+import com.example.uwan.tool.UrlUtil;
 import com.example.uwan.view.HeadListView;
 import com.example.uwan.view.HeadListView.IXListViewListener;
 
@@ -39,7 +51,7 @@ import android.widget.TextView;
 
 public class NewsFragment extends Fragment implements IXListViewListener{
 	private final static String TAG = "NewsFragment";
-	Activity activity;
+	public Activity activity;
 	ArrayList<NewsEntity> newsList = new ArrayList<NewsEntity>();
 	public HeadListView mListView;
 	public NewsAdapter mAdapter;
@@ -51,6 +63,17 @@ public class NewsFragment extends Fragment implements IXListViewListener{
 	//Toast提示框
 	private RelativeLayout notify_view;
 	private TextView notify_view_text;
+	private String channel;//频道
+	
+	
+	public String getChannel() {
+		return channel;
+	}
+
+	public void setChannel(String channel) {
+		this.channel = channel;
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -58,7 +81,6 @@ public class NewsFragment extends Fragment implements IXListViewListener{
 		text = args != null ? args.getString("text") : "";
 		channel_id = args != null ? args.getInt("id", 0) : 0;
 		iscity =  args != null ? args.getInt("iscity") : 0;
-		initData();
 		super.onCreate(savedInstanceState);
 	}
 
@@ -111,11 +133,23 @@ public class NewsFragment extends Fragment implements IXListViewListener{
 		notify_view = (RelativeLayout)view.findViewById(R.id.notify_view);
 		notify_view_text = (TextView)view.findViewById(R.id.notify_view_text);
 		item_textview.setText(text);
+		
+		initData();
 		return view;
 	}
 
 	private void initData() {
-		newsList = Constants.getNewsList();
+		newsList = new ArrayList<NewsEntity>();
+		//String param = getChannel()+"/0/10";
+		String param ="";
+		try {
+			param =  URLEncoder.encode("传媒", "UTF-8")+"/20/10";
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		GetNewsAsync getNews = new GetNewsAsync(param,this,newsList,mAdapter,mListView);
+		getNews.execute();
 	}
 	
 	public Handler handler = new Handler() {
@@ -234,7 +268,7 @@ public class NewsFragment extends Fragment implements IXListViewListener{
 		Log.d(TAG, "channel_id = " + channel_id);
 	}
 
-	private void onLoad() {
+	public void onLoad() {
 		mListView.stopRefresh();
 		mListView.stopLoadMore();
 		mListView.setRefreshTime(DateTools.getNewsDetailsDate(DateTools.getTime()));
@@ -244,12 +278,39 @@ public class NewsFragment extends Fragment implements IXListViewListener{
 		handler.postDelayed(new Runnable() {
 			public void run() {
 			
-				// mAdapter.notifyDataSetChanged();
-				//重新设置
-				newsList = Constants.getNewsList();//测试用
-				mAdapter = new NewsAdapter(activity, newsList);
-				mListView.setAdapter(mAdapter);
-				onLoad();
+//				// mAdapter.notifyDataSetChanged();
+//				HttpGet get = new HttpGet(UrlUtil.url+getChannel()+"/0/10");
+//				HttpClient httpClient = new DefaultHttpClient();
+//				HttpResponse httpResponse;
+//				 String[] r = new String[2];
+//					try {
+//						httpResponse = httpClient.execute(get);
+//						  if (httpResponse.getStatusLine().getStatusCode() == 200) {
+//					            // 获取服务器响应的字符串
+//					        	r[0] = "200";
+//							    r[1] = EntityUtils.toString(httpResponse.getEntity());
+//							    JsonTools.JsonToNews(r[1], newsList);
+//							    System.out.println(r[1]);
+//						  }
+//					} catch (ClientProtocolException e) {
+//						// TODO Auto-generated catch block
+//						r[0] = e.toString();
+//						e.printStackTrace();
+//					} catch (IOException e) {
+//						// TODO Auto-generated catch block
+//						r[0] = e.toString();
+//						e.printStackTrace();
+//					}
+//			//	newsList = Constants.getNewsList();//测试用
+//				mAdapter = new NewsAdapter(activity, newsList);
+//				mListView.setAdapter(mAdapter);
+//				onLoad();
+				newsList = new ArrayList<NewsEntity>();
+				String param = getChannel()+"/0/10";
+				//String param ="0/0/10";
+				GetNewsAsync getNews = new GetNewsAsync(param,NewsFragment.this,newsList,mAdapter,mListView);
+				getNews.execute();
+				
 			}
 		}, 2000);
 		
@@ -260,12 +321,40 @@ public class NewsFragment extends Fragment implements IXListViewListener{
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-			ArrayList<NewsEntity>	tempnewsList = Constants.getNewsList();
-			for(NewsEntity tempnew:tempnewsList){
-			newsList.add(tempnew);
-			}
-				mAdapter.notifyDataSetChanged();
-				onLoad();
+//			ArrayList<NewsEntity> tempnewsList = new ArrayList<NewsEntity>();
+//			HttpGet get = new HttpGet(UrlUtil.url+getChannel()+"/"+newsList.get(newsList.size()).getId()+"/10");
+//			HttpClient httpClient = new DefaultHttpClient();
+//			HttpResponse httpResponse;
+//			 String[] r = new String[2];
+//				try {
+//					httpResponse = httpClient.execute(get);
+//					  if (httpResponse.getStatusLine().getStatusCode() == 200) {
+//				            // 获取服务器响应的字符串
+//				        	r[0] = "200";
+//						    r[1] = EntityUtils.toString(httpResponse.getEntity());
+//						    JsonTools.JsonToNews(r[1], tempnewsList);
+//							for(NewsEntity tempnew:tempnewsList){
+//								newsList.add(tempnew);
+//								}
+//					  }
+//				} catch (ClientProtocolException e) {
+//					// TODO Auto-generated catch block
+//					r[0] = e.toString();
+//					e.printStackTrace();
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					r[0] = e.toString();
+//					e.printStackTrace();
+//				}
+//			
+//		
+//				mAdapter.notifyDataSetChanged();
+//				onLoad();
+				newsList = new ArrayList<NewsEntity>();
+				//String param = getChannel()+"/0/10";
+				String param =getChannel()+"/"+newsList.get(newsList.size()).getId()+"/10";
+				GetNewsAsync getNews = new GetNewsAsync(param,NewsFragment.this,newsList,mAdapter,mListView,newsList.get(newsList.size()).getId());
+				getNews.execute();
 			}
 		}, 2000);
 		
